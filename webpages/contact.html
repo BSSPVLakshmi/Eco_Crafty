@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact Us - Eco Crafty</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(to bottom right, #fdf6f0, #fbeee2);
+      color: #4d2c19;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+       align-items: center;
+    }
+
+    .page-title {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+      text-decoration: underline; /* This underlines the text itself */
+      text-underline-offset: 6px; /* adds a little space below the text */
+      text-decoration-thickness: 3px;
+      color: #4d2c19;
+    }
+
+    .intro-text {
+      max-width: 1200px;
+      width: 100%;
+      font-size: 18px;
+      text-align: center;
+      color: #5e3d2b;
+      margin-bottom: 40px;
+    }
+
+    .contact-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      max-width: 1200px;
+      width: 100%;
+      gap: 40px;
+      box-sizing: border-box;
+    }
+
+    .contact-image {
+      flex: 1 1 300px;
+      display: flex;
+      justify-content: center;
+      min-width: 250px;
+      max-width: 350px;
+    }
+
+    .contact-image img {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 8px solid rgba(255, 250, 245, 0.7);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease;
+      background-color: white;
+    }
+
+    .contact-image img:hover {
+      transform: scale(1.05);
+    }
+
+    .contact-info {
+      flex: 2 1 500px;
+      min-width: 320px;
+      padding: 50px 60px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 2px solid rgba(196, 142, 106, 0.4);
+      box-shadow:
+        0 8px 32px 0 rgba(196, 142, 106, 0.3),
+        inset 0 0 30px rgba(255, 255, 255, 0.3);
+      color: #4a3219;
+      transition: box-shadow 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .contact-info:hover {
+      box-shadow:
+        0 15px 45px 0 rgba(196, 142, 106, 0.5),
+        inset 0 0 40px rgba(255, 255, 255, 0.5);
+    }
+
+    .contact-info h2 {
+      font-size: 32px;
+      margin-bottom: 30px;
+      font-weight: 700;
+      text-shadow: 0 1px 2px rgba(196, 142, 106, 0.6);
+    }
+
+    .contact-info p {
+      font-size: 19px;
+      margin: 18px 0;
+      line-height: 1.7;
+    }
+
+    .contact-info a {
+      color: #c48e6a;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .contact-info a:hover {
+      color: #a26f3d;
+      text-decoration: underline;
+    }
+   
+
+    @media (max-width: 900px) {
+      .contact-section {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .contact-image img {
+        width: 220px;
+        height: 220px;
+      }
+
+      .contact-info {
+        padding: 40px 30px;
+      }
+    }
+     footer {
+      width:100%;
+  text-align: center;
+  padding: 20px;
+  background: #ece0c0;
+  margin-top: 45px;
+  margin-bottom: 0px;
+}
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Contact Us</h1>
+
+  <div class="intro-text">
+    <p><strong>Eco Crafty</strong> is your go-to destination for sustainable, handmade, and eco-friendly products made with love and care by skilled artisans. Whether you're looking for unique jewelry, stylish bags, or soulful home decor, we're here to help and support your eco-conscious lifestyle. Have questions, suggestions, or just want to say hello? Reach out to us!</p>
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-image">
+      <img src="../images/contact-eco-crafty.jpg" alt="Eco Crafty Contact Image" />
+    </div>
+
+    <div class="contact-info">
+      <h2>We’d Love to Connect With You</h2>
+      <p><strong>📞 Call / WhatsApp:</strong> <a href="tel:+911234567890">+91 12345 67890</a></p>
+      <p><strong>📧 Email:</strong> <a href="mailto:hello@ecocrafty.in">hello@ecocrafty.in</a></p>
+      <p><strong>📍 Address:</strong><br>
+         Eco Crafty Studio,<br>
+         Green Land, Sector 12,<br>
+         Andhra Pradesh, India 
+      </p>
+      <p><strong>📸 Instagram:</strong> <a href="https://instagram.com/eco_crafty" target="_blank">eco_crafty</a></p>
+    </div>
+  </div>
+ 
+</body>
+</html>
