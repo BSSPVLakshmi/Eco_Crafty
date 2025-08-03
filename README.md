@@ -63,8 +63,7 @@ The idea behind Eco Crafty is to promote **handmade and eco-conscious products**
 Hi, I’m Balabhadra S S P V Lakshmi 👋 
 A CSE student passionate about building practical web apps that solve real problems. I created Eco Crafty to combine learning with purpose.
 
-Feel free to connect with me on [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?logo=linkedin)](https://www.linkedin.com/in/lakshmi-balabhadra-76b85131b)
- or [GitHub](https://github.com/BSSPVLakshmi).
+Feel free to connect with me on [LinkedIn Profile](https://www.linkedin.com/in/lakshmi-balabhadra-76b85131b) or [GitHub](https://github.com/BSSPVLakshmi).
 
 📄 License
 This project is for learning purposes. You are free to use or modify it.
