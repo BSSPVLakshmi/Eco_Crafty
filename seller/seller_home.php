@@ -16,8 +16,6 @@ $sellerStmt->execute();
 $sellerResult = $sellerStmt->get_result();
 $seller = $sellerResult->fetch_assoc();
 
-
-
 // Get seller's products
 $productStmt = $conn->prepare("SELECT * FROM products WHERE seller_id = ?");
 $productStmt->bind_param("i", $seller_id);
@@ -25,21 +23,27 @@ $productStmt->execute();
 $productResult = $productStmt->get_result();
 
 // Get seller's orders
-$orderStmt = $conn->prepare("
-    SELECT 
-        o.id AS order_id, o.product_id, o.user_id, o.quantity, o.ordered_at,
-        p.name AS product_name, p.price,
-        u.name AS customer_name,
-        (p.price * o.quantity) AS total_price
-    FROM orders o
-    JOIN products p ON o.product_id = p.id
-    JOIN users u ON o.user_id = u.id
-    WHERE p.seller_id = ?
-    ORDER BY o.ordered_at DESC
-");
-$orderStmt->bind_param("i", $seller_id);
-$orderStmt->execute();
-$orderResult = $orderStmt->get_result();
+$sql = "
+SELECT 
+    orders.id AS order_id,
+    products.name AS product_name,
+    users.name AS customer_name,
+    orders.quantity,
+    (orders.quantity * products.price) AS total_price,
+    orders.address,
+    orders.status,
+    orders.ordered_at
+FROM orders
+JOIN products ON orders.product_id = products.id
+JOIN users ON orders.user_id = users.id
+WHERE products.seller_id = ? AND orders.status = 'pending'
+ORDER BY orders.ordered_at DESC";
+
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $seller_id);
+$stmt->execute();
+$orderResult = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -48,41 +52,42 @@ $orderResult = $orderStmt->get_result();
     <title>Seller Dashboard</title>
     <style>
         body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fefaf5;
-      margin: 0;
-      padding: 0;
-    }
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fefaf5;
+            margin: 0;
+            padding: 0;
+        }
 
-    .navbar {
-      background: #ece0c0;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+        .navbar {
+            background: #ece0c0;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    .navbar h1 {
+        .navbar h1 {
             position: absolute;
-            left:38%;
+            left: 38%;
             font-size: 34px;
             font-weight: bold;
             letter-spacing: 1px;
-             color:#4d2c19;
+            color: #4d2c19;
         }
 
-    .logo-container {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      overflow: hidden;
-    }
+        .logo-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
 
-    .logo-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         h1, h2 {
             text-align: center;
             color: #4d2c19;
@@ -91,6 +96,7 @@ $orderResult = $orderStmt->get_result();
         .section {
             margin: 30px auto;
             max-width: 1000px;
+            min-height:210px;
             background: white;
             padding: 20px;
             border-radius: 10px;
@@ -112,14 +118,16 @@ $orderResult = $orderStmt->get_result();
         th {
             background-color: #eadaba;
         }
-        .addproduct{
-            text-align:right;
-            margin-left:1100px;
+
+        .addproduct {
+            text-align: right;
+            margin-left: 1100px;
             margin-bottom: 10px;
         }
-        .addproduct a{
+
+        .addproduct a {
             text-decoration: none;
-          padding: 10px 20px;
+            padding: 10px 20px;
             background: #1ba606ff;
             color: white;
             border-radius: 5px;
@@ -137,30 +145,46 @@ $orderResult = $orderStmt->get_result();
             color: white;
             border-radius: 5px;
         }
+
+        .ship-btn button {
+            padding: 6px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .ship-btn button:hover {
+            background-color: #218838;
+        }
+
         footer {
-      background-color: #ece0c0;
-      text-align: center;
-      padding: 15px;
-      margin-top: 30px;
-      font-size: 14px;
-      color: #4d2c19;
-    }
+            text-align: center;
+            padding: 10px 0;
+            background: #f0e1b5;
+            margin-top: 30px;
+             display: flex;
+            justify-content: center;
+            width: 100%;
+            bottom: 0;
+        }
     </style>
 </head>
 <body>
 <div class="navbar">
     <div class="logo-container">
-      <img src="../images/logo.jpg" alt="Eco Crafty Logo">
+        <img src="../images/logo.jpg" alt="Eco Crafty Logo">
     </div>
-    
-<h1>Welcome, <?php echo htmlspecialchars($seller['name']); ?> (Seller)</h1>
- <div class="addproduct">
-    <a href="seller_addproduct.php">Add Product</a>
-</div> 
 
-<div class="logout">
-    <a href="../webpages/logout.php">Logout</a>
-</div>
+    <h1>Welcome, <?php echo htmlspecialchars($seller['name']); ?> (Seller)</h1>
+    <div class="addproduct">
+        <a href="seller_addproduct.php">Add Product</a>
+    </div>
+
+    <div class="logout">
+        <a href="../webpages/logout.php">Logout</a>
+    </div>
 </div>
 
 <div class="section">
@@ -173,7 +197,10 @@ $orderResult = $orderStmt->get_result();
                 <th>Customer</th>
                 <th>Quantity</th>
                 <th>Total Price</th>
+                <th>Address</th>
+                <th>Status</th>
                 <th>Date</th>
+                <th>Action</th>
             </tr>
             <?php while ($order = $orderResult->fetch_assoc()): ?>
                 <tr>
@@ -182,7 +209,19 @@ $orderResult = $orderStmt->get_result();
                     <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
                     <td><?php echo $order['quantity']; ?></td>
                     <td>₹<?php echo $order['total_price']; ?></td>
+                    <td><?php echo htmlspecialchars($order['address']); ?></td>
+                    <td><?php echo htmlspecialchars($order['status']); ?></td>
                     <td><?php echo $order['ordered_at']; ?></td>
+                    <td class="ship-btn">
+                        <?php if ($order['status'] == 'pending'): ?>
+                            <form action="ship_order.php" method="POST">
+                                <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
+                                <button type="submit" name="ship_order">Mark as Shipped</button>
+                            </form>
+                        <?php else: ?>
+                            <span>Shipped</span>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endwhile; ?>
         </table>
@@ -208,7 +247,7 @@ $orderResult = $orderStmt->get_result();
                     <td>₹<?php echo $product['price']; ?></td>
                     <td><?php echo $product['category_name']; ?></td>
                     <td><?php echo htmlspecialchars($product['description']); ?></td>
-                    <td><img src="../<?php echo $product['image']; ?>" width="80" heigth="80"></td>
+                    <td><img src="../<?php echo $product['image']; ?>" width="80" height="80"></td>
                 </tr>
             <?php endwhile; ?>
         </table>
@@ -216,11 +255,13 @@ $orderResult = $orderStmt->get_result();
         <p>No products found.</p>
     <?php endif; ?>
 </div>
+
 <footer>
     © 2025 Eco Crafty. Handmade with love for a greener world.
-  </footer>
+</footer>
 
 </body>
 </html>
+
 
 
