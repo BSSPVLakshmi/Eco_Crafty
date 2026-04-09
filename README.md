@@ -57,7 +57,7 @@ The idea behind Eco Crafty is to promote **handmade and eco-conscious products**
         $conn = new mysqli('localhost', 'root', '', 'eco_crafty');
 5. Start Apache and MySQL.
 6. Access the site in your browser:
-      http://localhost/eco_crafty/homepage.php
+      http://localhost/eco_crafty/webpages/homepage.php
 
 🙋‍♀️ Author
 Hi, I’m Balabhadra S S P V Lakshmi 👋 
